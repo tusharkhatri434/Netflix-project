@@ -5,16 +5,16 @@
 
 
 # features
--- Login/SignUp
+- Login/SignUp
      -- Sign In / Sign up form
      -- redirect to Browser Page 
--- Browser(after authentication)
+- Browser(after authentication)
   - Header
   - Main movie
        - Trailer
        - Title & Description
        - Movie suggestions
             -- Movie lists * N
-  -- Netflix GPT
+  - Netflix GPT
      --Search Bar
      -- Movie suggestions
