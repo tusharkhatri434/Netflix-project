@@ -1,80 +1,101 @@
-import React from 'react'
-import banner from "../assets/login_banner.jpg"
-import Header from './Header'
-import { useState } from 'react';
-import {createUserWithEmailAndPassword , signInWithEmailAndPassword ,updateProfile} from "firebase/auth";
-import {auth} from "../utils/firebase";
-import { useNavigate } from 'react-router-dom';
-import loginValidation from '../utils/validation';
+import React from "react";
+import banner from "../assets/login_banner.jpg";
+import Header from "./Header";
+import { useState } from "react";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import loginValidation from "../utils/validation";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { PROFILE_AVATAR } from "../utils/constants";
+
 
 const Login = () => {
-  
-  const [signUp,setSignUp] = useState(false);
-  const [email , setEmail] = useState("");
-  const [password , setPassword] = useState("");
-  const[name , setName] = useState("");
-  const[errorMessage,setErrorMessage] = useState(null);
-
+  const [signUp, setSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+   
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  function toogleForm (){
+  function toogleForm() {
     setSignUp(!signUp);
   }
-   
-  const formSubmitHandler = (e) =>{
-           e.preventDefault();
-           console.log(name,email,password);
-           const response = loginValidation(email,password);
-           if(response){
-             setErrorMessage(response);
-             console.log(response);
-             return ; 
-           }
 
-           if(signUp){
-            // logic for form sign
-              console.log("i am on");
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(name, email, password);
+    const response = loginValidation(email, password);
+    if (response) {
+      setErrorMessage(response);
+      console.log(response);
+      return;
+    }
 
-              createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                  // Signed up
-                  const user = userCredential.user;
-                    updateProfile(user ,{
-                      displayName: name,
-                    }).then(()=>{
-                      navigate("/browse");
-                    }).catch((error)=>{
-                        setErrorMessage(error);
-                    })
-                  // ...
-                })
-                .catch((error) => {
-                  setErrorMessage("failed to create");
-                  // ..
-                });
+    if (signUp) {
+      // logic for form sign
+      console.log("i am on");
 
-           }
-           else{
-            signInWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user);
-                navigate("/browse")
-                // ...
-              })
-              .catch((error) => {
-                // const errorCode = error.code;
-                // const errorMessage = error.message;
-                setErrorMessage("Check Email && Password");
-              });
-           }
-           setEmail("");
-           setName("");
-           setPassword("");
-           setErrorMessage(null);
-  }
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name,
+            photoURL : PROFILE_AVATAR
+          })
+            .then(() => {
+              navigate("/browse");
+                     const { uid, email, displayName, photoURL } = auth.currentUser;
+                         dispatch(addUser({
+                             uid: uid,
+                             email: email,
+                             displayName: displayName,
+                             photoURL: photoURL,
+                           })
+                         );
+            })
+            .catch((error) => {
+              setErrorMessage(error);
+            });
+          // ...
+        })
+        .catch((error) => {
+          setErrorMessage("failed to create");
+          // ..
+        });
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+           const { uid, email, displayName, photoURL } = user;
+           dispatch(
+             addUser({
+               uid: uid,
+               email: email,
+               displayName: displayName,
+               photoURL: photoURL,
+             })
+           );
+          // ...
+        })
+        .catch((error) => {
+          // const errorCode = error.code;
+          // const errorMessage = error.message;
+          setErrorMessage("Check Email && Password");
+        });
+    }
+    setEmail("");
+    setName("");
+    setPassword("");
+    setErrorMessage(null);
+  };
 
   return (
     <div>
@@ -85,9 +106,12 @@ const Login = () => {
         className="brightness-[.40] w-screen min-h-screen  max-sm:hidden"
       ></img>
       <div className=" px-12 py-16 max-sm:py-28 w-[26rem] max-sm:w-full max-sm:static max-sm:rounded-none max-sm:h-[100vh]  bg-black absolute top-24 max-md:right-36 max-lg:right-1/4  right-1/3 rounded-md bg-opacity-80">
-        <form onSubmit={(e)=>{
-          e.preventDefault();
-        }}  className="flex flex-col gap-4 ">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+          className="flex flex-col gap-4 "
+        >
           <p className="text-4xl font-semibold mb-3 text-white">
             {signUp ? "Sign Up" : "Sign In"}
           </p>
@@ -115,17 +139,17 @@ const Login = () => {
             className="h-14 rounded-md px-4 bg-zinc-800 text-white outline-none"
             type="password"
             placeholder="Password"
-            name='password'
-            autoComplete='on'
+            name="password"
+            autoComplete="on"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
-          <p className='text-red-500'>{errorMessage}</p>
+          <p className="text-red-500">{errorMessage}</p>
           <button
             className="h-14 rounded-md bg-red-600 text-white mt-8"
-            type='submit'
+            type="submit"
             onClick={formSubmitHandler}
           >
             {signUp ? "Sign Up" : "Sign In"}
@@ -140,13 +164,17 @@ const Login = () => {
         </form>
         <p className="mt-6 text-zinc-400">
           {signUp ? "Already have an account? " : "New to Netflix? "}
-          <button type='submit' onClick={toogleForm} className="text-white cursor-pointer">
+          <button
+            type="submit"
+            onClick={toogleForm}
+            className="text-white cursor-pointer"
+          >
             {signUp ? "Sign In" : "Sign Up"}
           </button>
         </p>
       </div>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
