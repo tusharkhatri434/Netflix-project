@@ -4,7 +4,6 @@ import Header from "./Header";
 import { useState } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,} from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import loginValidation from "../utils/validation";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
@@ -19,7 +18,6 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
    
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   function toogleForm() {
     setSignUp(!signUp);
@@ -48,15 +46,14 @@ const Login = () => {
             photoURL : PROFILE_AVATAR
           })
             .then(() => {
-              navigate("/browse");
-                     const { uid, email, displayName, photoURL } = auth.currentUser;
-                         dispatch(addUser({
-                             uid: uid,
-                             email: email,
-                             displayName: displayName,
-                             photoURL: photoURL,
-                           })
-                         );
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+                  dispatch(addUser({
+                      uid: uid,
+                      email: email,
+                      displayName: displayName,
+                      photoURL: photoURL,
+                    })
+                  );
             })
             .catch((error) => {
               setErrorMessage(error);
@@ -71,18 +68,7 @@ const Login = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-           const { uid, email, displayName, photoURL } = user;
-           dispatch(
-             addUser({
-               uid: uid,
-               email: email,
-               displayName: displayName,
-               photoURL: photoURL,
-             })
-           );
+          // const user = userCredential.user;
           // ...
         })
         .catch((error) => {

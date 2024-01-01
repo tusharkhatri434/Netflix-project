@@ -1,22 +1,24 @@
 import React from 'react'
 import logo from '../assets/Netflix_Logo.png';
+import { useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import store from '../utils/appStore';
 import { addUser,removeUser } from '../utils/userSlice';
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut,onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../utils/firebase';
 
 const Header = () => {
 
   const user = useSelector((store)=>store.user); 
   const dispatch = useDispatch();
-  const Navigate = useNavigate(); 
+  const navigate = useNavigate(); 
 
   const handleSignOut = ()=>{
+
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        Navigate("/");
+        navigate("/");
          dispatch(removeUser());
         // Sign-out successful.
       })
@@ -25,6 +27,29 @@ const Header = () => {
         console.log("something went wrrong");
       });
   }
+
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const { uid, email, displayName, photoURL } = user;
+          dispatch(
+            addUser({
+              uid: uid,
+              email: email,
+              displayName: displayName,
+              photoURL: photoURL,
+            })
+          );
+          navigate("/browse");
+        } else {
+          dispatch(removeUser());
+          navigate("/");
+        }
+      });
+
+      // Unsiubscribe when component unmounts
+      return () => unsubscribe();
+    }, []);
 
   return (
     <div className="z-40 absolute flex justify-between w-full">
