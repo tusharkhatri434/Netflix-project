@@ -6,6 +6,7 @@ import { addUser,removeUser } from '../utils/userSlice';
 import { getAuth, signOut,onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../utils/firebase';
+import { PROFILE_AVATAR } from '../utils/constants';
 
 const Header = () => {
 
@@ -52,12 +53,13 @@ const Header = () => {
     }, []);
 
   return (
-    <div className="z-40 absolute flex justify-between w-full shadow-lg bg-transparent">
+    <div className="z-40 absolute flex justify-between w-full bg-inherit">
       <img className="w-40 max-sm:w-40" src={logo} alt="logo"></img>
       
-      {user && <div className=''>
-        <img className='w-10' alt='profile avatar' src={user?.photoURL}></img>
-        <p onClick={handleSignOut} className='bg-slate-500 font-bold cursor-pointer'>{user?.displayName}</p>
+      {user && <div className='flex  gap-1'>
+        <img className='h-12' alt='profile avatar' src={PROFILE_AVATAR}></img>
+        <p onClick={handleSignOut} className='h-14 pt-3 text-white font-bold cursor-pointer'>SignOut</p>
+        {/* <p onClick={handleSignOut} className='bg-slate-500 font-bold cursor-pointer '>{user?.displayName}</p> */}
       </div>}
     </div>
   );
