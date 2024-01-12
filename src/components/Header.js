@@ -52,8 +52,8 @@ const Header = () => {
     }, []);
 
   return (
-    <div className="z-40 absolute flex justify-between w-full">
-      <img className="w-56 max-sm:w-40" src={logo} alt="logo"></img>
+    <div className="z-40 absolute flex justify-between w-full shadow-lg bg-transparent">
+      <img className="w-40 max-sm:w-40" src={logo} alt="logo"></img>
       
       {user && <div className=''>
         <img className='w-10' alt='profile avatar' src={user?.photoURL}></img>
