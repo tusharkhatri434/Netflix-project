@@ -4,22 +4,23 @@
 
 html{
     scroll-behavior: smooth;
+    background: #000;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-     box-shadow: inset 0 0 5px rgb(179, 171, 171);
-  border-radius: 10%;
+  background: black;
+
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(52, 52, 56);
+  background: red;
   border-radius: 5px;
 }
 
@@ -34,3 +35,11 @@ html{
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+  
+  .moview-by-type {
+    background: linear-gradient(0deg, #141414 80%, transparent 100%);
+  }
+  .scale-img:hover{
+    scale: 1.1;
+    transition: all linear 120ms;
+  }

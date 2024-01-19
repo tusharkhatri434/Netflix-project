@@ -91,7 +91,7 @@ const Login = () => {
         alt="banner"
         className="brightness-[.40] w-screen min-h-screen  max-sm:hidden"
       ></img>
-      <div className=" px-12 py-16 max-sm:py-28 w-[26rem] max-sm:w-full max-sm:static max-sm:rounded-none max-sm:h-[100vh]  bg-black absolute top-24 max-md:right-36 max-lg:right-1/4  right-1/3 rounded-md bg-opacity-80">
+      <div className="px-12 py-16 max-sm:py-28 w-[26rem] max-sm:w-full max-sm:static max-sm:rounded-none max-sm:h-[100vh]  bg-black absolute top-24 max-md:right-36 max-lg:right-1/4  right-1/3 rounded-md bg-opacity-80">
         <form
           onSubmit={(e) => {
             e.preventDefault();

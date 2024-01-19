@@ -2,8 +2,12 @@ import { IMG_CDN_URL } from "../utils/constants";
 
 const MovieCard = ({ posterPath }) => {
   return (
-    <div className="w-48 pr-4">
-      <img alt="Movie Card" src={IMG_CDN_URL + posterPath} />
+    <div className="w-40 box-border mr-4 overflow-hidden cursor-pointer">
+      <img
+        alt="Movie Card"
+        className="rounded-xl  object-contain "
+        src={IMG_CDN_URL + posterPath}
+      />
     </div>
   );
 };

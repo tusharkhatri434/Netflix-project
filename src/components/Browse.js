@@ -5,7 +5,8 @@ import SecondaryContainer from './SecondaryContainer'
 import useNowPlayingMovies from '../hooks/useNowPlayingMovies'
 import usePopularMovies from '../hooks/usePopularMovies'
 import Footer from './Footer'
-
+import Home from './Home'
+import { Outlet } from 'react-router-dom'
 const Browse = () => {
    
    useNowPlayingMovies();
@@ -14,8 +15,7 @@ const Browse = () => {
   return (
     <div>
       <Header />
-      <MainContainer />
-      <SecondaryContainer />
+       <Outlet />
       <Footer />
     </div>
   )
