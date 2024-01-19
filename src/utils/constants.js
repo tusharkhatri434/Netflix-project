@@ -10,3 +10,6 @@ export const API_OPTIONS = {
 };
 
 export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500";
+
+export const GPT_API_Key = "sk-wic8SKWiYBmyVEkK36V9T3BlbkFJS2q6B4lNs4L07l8ov9";
+
